@@ -16,19 +16,32 @@ class Node {
 */
 
 class Solution {
-    vector<int>ans;
-    void get_inOrder(Node* root){
-        if(!root){
-            return ;
-        }
-        get_inOrder(root->left);
-        ans.push_back(root->data);
-        get_inOrder(root->right);
-    }
   public:
     // Function to return a list containing the inorder traversal of the tree.
     vector<int> inOrder(Node* root) {
-        get_inOrder(root);
+        vector<int>ans;
+        Node* curr=root;
+        while(curr){
+            if(!curr->left){
+                ans.push_back(curr->data);
+                curr=curr->right;
+            }
+            else{
+                Node* prev=curr->left;
+                while(prev->right && prev->right!=curr){
+                    prev=prev->right;
+                }
+                if(!prev->right){
+                    prev->right=curr;
+                    curr=curr->left;
+                }
+                else{
+                    prev->right=NULL;
+                    ans.push_back(curr->data);
+                    curr=curr->right;
+                }
+            }
+        }
         return ans;
     }
 };
