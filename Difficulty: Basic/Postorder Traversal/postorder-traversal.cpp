@@ -7,19 +7,32 @@ struct Node
     struct Node* right;
 }; */
 class Solution {
-    vector<int>ans;
-    void get_postOrder(Node* root){
-        if(!root){
-            return;
-        }
-        get_postOrder(root->left);
-        get_postOrder(root->right);
-        ans.push_back(root->data);
-    }
   public:
     // Function to return a list containing the postorder traversal of the tree.
     vector<int> postOrder(Node* root) {
-        get_postOrder(root);
+        if(!root){
+            return {};
+        }
+        vector<int>ans;
+        stack<Node*>st1,st2;
+        st1.push(root);
+        Node* node;
+        while(!st1.empty()){
+            node=st1.top();
+            st1.pop();
+            st2.push(node);
+            
+            if(node->left){
+                st1.push(node->left);
+            }
+            if(node->right){
+                st1.push(node->right);
+            }
+        }
+        while(!st2.empty()){
+            ans.push_back(st2.top()->data);
+            st2.pop();
+        }
         return ans;
     }
 };
