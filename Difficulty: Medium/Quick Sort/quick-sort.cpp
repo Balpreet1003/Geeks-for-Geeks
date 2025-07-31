@@ -13,7 +13,7 @@ class Solution {
     int partition(vector<int>& arr, int low, int high) {
         int pivot = arr[high];
         int j=low-1;
-        for(int i=low; i<high;i++){
+        for(int i=low; i<=high;i++){
             if(arr[i]<pivot){
                 j++;
                 swap(arr[i],arr[j]);
