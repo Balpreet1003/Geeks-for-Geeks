@@ -14,37 +14,35 @@ class Node
 }; */
 
 class Solution {
-  public:
-    vector<Node*> findPreSuc(Node* root, int key) {
-        vector<Node*>inorder;
-        stack<Node*>st;
-        Node* curr=root;
-        while(curr || !st.empty()){
-            while(curr){
-                st.push(curr);
+    Node* get_successor(Node* root, int key){
+        Node* ans=NULL, *curr=root;
+        while(curr){
+            if(curr->data<=key)
+                curr=curr->right;
+            else{
+                ans=curr;
                 curr=curr->left;
             }
-            curr=st.top();
-            st.pop();
-            inorder.push_back(curr);
-            curr=curr->right;
         }
-        vector<Node*>ans(2, NULL);
-        for(int i=0;i<inorder.size();i++){
-            if(inorder[i]->data==key){
-                if(i!=inorder.size()-1){
-                    ans[1]=inorder[i+1];
-                }
-                break;
+        return ans;
+    }
+    Node* get_predecessor(Node* root, int key){
+        Node* ans=NULL, *curr=root;
+        while(curr){
+            if(curr->data>=key)
+                curr=curr->left;
+            else{
+                ans=curr;
+                curr=curr->right;
             }
-            if(inorder[i]->data>key){
-                if(i!=inorder.size()-1){
-                    ans[1]=inorder[i];
-                }
-                break;
-            }
-            ans[0]=inorder[i];
         }
+        return ans;
+    }
+  public:
+    vector<Node*> findPreSuc(Node* root, int key) {
+        vector<Node* >ans(2,NULL);
+        ans[0]=get_predecessor(root, key);
+        ans[1]=get_successor(root, key);
         return ans;
     }
 };
