@@ -1,4 +1,25 @@
 class Solution {
+    bool bfs(unordered_map<int, vector<int>>& adj, vector<bool>&vis, int i){
+        queue<pair<int,int>>q;
+        q.push({i,-1});
+        vis[i]=true;
+        
+        while(!q.empty()){
+            pair<int,int>x=q.front(); q.pop();
+            int node=x.first;
+            int par=x.second;
+            
+            for(int child:adj[node]){
+                if(!vis[child]){
+                    vis[child]=true;
+                    q.push({child, node});
+                }
+                else if(child!=par)
+                    return true;
+            }
+        }
+        return false;
+    }
 public:
     bool isCycle(int V, vector<vector<int>>& edges) {
         unordered_map<int, vector<int>> adj;
@@ -11,26 +32,10 @@ public:
 
         for (int start = 0; start < V; start++) {
             if (!vis[start]) {
-                queue<pair<int, int>> q;
-                q.push({start, -1});
-                vis[start] = true;
-
-                while (!q.empty()) {
-                    int node = q.front().first;
-                    int parent = q.front().second;
-                    q.pop();
-
-                    for (int i : adj[node]) {
-                        if (!vis[i]) {
-                            q.push({i, node});
-                            vis[i] = true;  // ✅ fix here
-                        } else if (i != parent) {
-                            return true;  // Cycle detected
-                        }
-                    }
-                }
+                if(bfs(adj, vis, start)) 
+                    return true;
             }
         }
-        return false;  // No cycle in any component
+        return false;
     }
 };
